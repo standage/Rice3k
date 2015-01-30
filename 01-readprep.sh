@@ -35,6 +35,9 @@ which wget   > /dev/null 2>&1 || echo "Error: cannot run wget"
 
 [ -f $TRIMJAR ] || echo "Error: cannot find Trimmomatic"
 [ -f $ADPTRS  ] || echo "Error: cannot find Illumina adapter file"
+if [ ! -f $TRIMJAR ] || [ ! -f $ADPTRS ]; then
+  exit 1
+fi
 
 
 # Procedure
@@ -58,22 +61,26 @@ do
   done
 
   # Adapter removal and quality trimming with Trimmomatic
-  java -jar ${TRIMJAR} PE \
-       -phred33 \
-       -threads 16 \
-       -trimlog ${acc}-trimlog.txt \
-       -basein ${acc}_ \
-       -baseout ${acc}_clean_ \
-       ILLUMINACLIP:${ADPTRS}:2:30:15 \
-       SLIDINGWINDOW:6:${MINQUAL} \
-       LEADING:${MINQUAL} \
-       TRAILING:${MINQUAL} \
-       MINLEN:${MINLENGTH}
+    java -jar ${TRIMJAR} PE \
+         -phred33 \
+         -threads 16 \
+         -trimlog ${acc}-trimlog.txt \
+         ${acc}_1.fastq.gz \
+         ${acc}_2.fastq.gz \
+         ${acc}_clean_1.fq.gz \
+         ${acc}_clean_unpaired_2.fq.gz \
+         ${acc}_clean_1.fq.gz \
+         ${acc}_clean_unpaired_2.fq.gz \
+         ILLUMINACLIP:${ADPTRS}:2:30:15 \
+         SLIDINGWINDOW:6:${MINQUAL} \
+         LEADING:${MINQUAL} \
+         TRAILING:${MINQUAL} \
+         MINLEN:${MINLENGTH}
 
-  # Post-trimming quality assessment
-  for end in 1 2
-  do
-    filename=${acc}_clean_${end}P.fastq
-    fastqc $filename
+    # Post-trimming quality assessment
+    for end in 1 2
+    do
+      filename=${acc}_clean_${end}.fq.gz
+      fastqc $filename
   done
 done
