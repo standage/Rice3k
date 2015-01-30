@@ -64,12 +64,11 @@ do
     java -jar ${TRIMJAR} PE \
          -phred33 \
          -threads 16 \
-         -trimlog ${acc}-trimlog.txt \
          ${acc}_1.fastq.gz \
          ${acc}_2.fastq.gz \
          ${acc}_clean_1.fq.gz \
-         ${acc}_clean_unpaired_2.fq.gz \
-         ${acc}_clean_1.fq.gz \
+         ${acc}_clean_unpaired_1.fq.gz \
+         ${acc}_clean_2.fq.gz \
          ${acc}_clean_unpaired_2.fq.gz \
          ILLUMINACLIP:${ADPTRS}:2:30:15 \
          SLIDINGWINDOW:6:${MINQUAL} \
