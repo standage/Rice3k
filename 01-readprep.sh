@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
+# Cluster configuration
+#-------------------------------------------------------------------------------
 #PBS -N RiceAssemblyReadPrep-BestStudent
-#PBS -l nodes=1:ppn=16,walltime=24:00:00,vmem=250gb
+#PBS -l nodes=1:ppn=16,walltime=12:00:00,vmem=250gb
 #PBS -j oe
 #PBS -m abe
 #PBS -q shared
 #PBS -M beststudent@indiana.edu
 
 
-# Configuration
+# Script configuration
 #-------------------------------------------------------------------------------
 ACCESSIONS="ERR605259 ERR605260 ERR605261 ERR605262"
 USERNAME=beststudent
@@ -83,3 +85,13 @@ do
     fastqc $filename
   done
 done
+
+# Concatenate all the data files together
+for acc in $ACCESSIONS
+do
+  gunzip -c ${acc}_clean_1.fq.gz >> all-1.fq
+  gunzip -c ${acc}_clean_2.fq.gz >> all-2.fq
+done
+gzip all-1.fq &
+gzip all-2.fq &
+wait
