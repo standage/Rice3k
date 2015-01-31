@@ -63,7 +63,7 @@ SOAPdenovo-63mer all -s soap.config -K $K -R -p 32 -o denovoassembly \
     1> assembly.log \
     2> assembly.err
 
-# Do gap filling; use "ls | xargs" so we don't have to know the filename
+# Do gap filling; use "ls | xargs" so we don't have to worry about the filename
 ls -1  *.scafSeq \
     | xargs GapFiller.pl -l gapfill.config -m 36 -o 2 -r 0.7 -n 10 -d 50 -t 10 \
                          -g 0 -T 32 -i 5 -b GapFillerOutput -s {}
