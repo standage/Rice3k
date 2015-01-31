@@ -17,9 +17,11 @@ RUN=run01    # Use the same value you used for read prep step
 
 # You shouldn't need to adjust the remaining settings
 WORKDIR=/N/dc2/scratch/${USERNAME}/rice-assembly/${RUN}
-AGDIR= # ??? AlignGraph dir
+AGDIR=/N/dc2/projects/brendelgroup/local/src/AlignGraph/AlignGraph
+ACDIR=/N/dc2/projects/brendelgroup/local/src/PAGIT/ABACAS
 
 export PATH=${AGDIR}:$PATH
+export PATH=${ACDIR}:$PATH
 
 
 # Sanity checks; if the script is going to fail, let's have it fail as soon as
